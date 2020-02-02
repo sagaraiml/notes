@@ -1,0 +1,54 @@
+nba = pd.read_csv('nba.csv')
+rev = pd.read_csv('revenue.csv')
+bask =pd.read_scv('nba.csv')
+----------------------------------------------------
+nba.shape; nba.index; nba.columns; nba.dtypes; nba.info();nba.axes; nba.get_dtype_counts()
+rev.sum(); rev.sum(axis=0);rev.sum(axis='index'); rev.sum(axis=1);rev.sum(axis='columns')
+--------------------------------------------------------
+#for selecting one column >>nba['Name'] #for selecting more than one columns>>nba[['Name', 'College']]
+#ideal method >>select = ['Number','Age','Salary'];nba[select]
+#add column at last >>nba['Sports'] = 'BasketBall'
+#insert at disered location >>bask.insert(10, column ='Legue', value ='Association')
+#operations >>bask['Age'] = bask['Age'] + 5 >>bask['Salary in lakhs'] = bask['Salary'] / 100000
+#all operations from series can be implemented >>bask['Position'].value_counts()
+-------------------------------------------------------
+droping rows which contails null values
+bask.dropna(how='all');bask.dropna(axis=0, thresh=2)#contains 2 NaN values in row;
+#searches NaN in subset=['College', 'Salary']
+bask.dropna(axis=0, how='any', subset=['College', 'Salary'], inplace=False)
+bask['Salary']=bask['Salary'].fillna(0) fill np.NaN with 0 in salary column #this method dont have inplace
+bask['Salary'].astype('int') #changes dtype to int only if NaN is not there in Salary
+---------------------------------------------------------
+sorting by values of columns, sort_index
+bask.sort_values(by=['Name', 'Age'], ascending=['False', 'True'], na_position='last')
+-----------------------------------------------------------
+bask.rank(axis=0, method='average', numeric_only=None, na_option='keep', ascending=True, pct=False)
+Compute numerical data ranks (1 through n) along axis. Equal values are
+assigned a rank that is the average of the ranks of those values
+------------------------------------------------------------------
+#to convert date and time into date format insted of object
+df["Start Date"] = pd.to_datetime(df["Start Date"])
+#you can directly columns to datetime when you read csv it has arg as parse_dates = [listlike]
+#value is equal something in specific column ,
+df1 = df[df["Gender"] == "Male"]>> it will give new df where Gender colmns has only Male value
+df["Gender"] = "Male" >> this will REPLACE ALL THE VALUES in Series with "Male"
+#for comparing datetime
+cond = df["Start Date"] > "1994-01-01"; df[cond]
+#df[conditional queries on same df] it will return df where contion specified is True
+c1 = df["Gender"] == "Male";c2 = df["Salary"] >= 50000; c3 = df["Team"] == "Sales"; df[(c1 & c2) | c3]
+#Put down coditon  in isin() rather than equating it to different values
+c4 = df["Team"].isin(["Sales","Finance"]); df[c4].head()
+#isnull() >> returns True where values are null 
+c5 = df["Gender"].isnull();df[c5].head()
+#notnull() >> returns True where values are not null 
+c6 = df["Gender"].notnull();df[c6].head()
+#if we want to find between some values use .between(,) 2 args will be of type of column and range is inclusive 
+df[df["Salary"].between(50000, 60000)].head()
+#first entry is considered non dupplicate(False) and afterwards duplicated (True) >> removing duplicate values
+df["First Name"].duplicated().head(10)  #here we checking duplicacy hence if duplicate it is True else False
+#df.duplicates >> duplicate values from df are dropped only if all the values in rows are same
+#removes when occurance in mention column is repeated
+df.drop_duplicates(subset= ["First Name", "Team"])
+#df.unique() >>considers NaN as unique but df.nunique() does not consider NaN as unique it drops it and then count
+df["Gender"].unique() >> returns array of unique values
+df["Team"].nunique() >> returns int with unique values which does not have NaN value

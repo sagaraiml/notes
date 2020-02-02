@@ -1,0 +1,112 @@
+Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 27 2018, 04:59:51) [MSC v.1914 64 bit (AMD64)] on win32
+>>> import pandas as pd; import numpy as np
+>>> s = pd.Series([1,2,3,np.nan,5,6], index=['A','B','C','D','E','F']);s
+A    1.0
+B    2.0
+C    3.0
+D    NaN
+E    5.0
+F    6.0
+dtype: float64
+>>> data = {'Gender': ['F', 'M', 'M'],'Emp_ID': ['E01', 'E02','E03'],'Age': [25, 27, 25]};data
+{'Gender': ['F', 'M', 'M'], 'Emp_ID': ['E01', 'E02', 'E03'], 'Age': [25, 27, 25]}
+>>> df = pd.DataFrame(data, columns=['Emp_ID','Gender', 'Age']);df
+  Emp_ID Gender  Age
+0    E01      F   25
+1    E02      M   27
+2    E03      M   25
+>>> c = ['sepal length', 'sepal width', 'petal length','petal width']
+>>> IMP = """
+Reading and Writing Data
+We’ll see three commonly used file formats: csv, text file, and Excel in Listing 2-19.
+Listing 2-19. Reading / writing data from csv, text, Excel
+# Reading
+df=pd.read_csv('Data/mtcars.csv') # from csv
+df=pd.read_csv('Data/mtcars.txt', sep='\t') # from text file
+df=pd.read_excel('Data/mtcars.xlsx','Sheet2') # from Excel
+# reading from multiple sheets of same Excel into different dataframes
+xlsx = pd.ExcelFile('file_name.xls')
+sheet1_df = pd.read_excel(xlsx, 'Sheet1')
+sheet2_df = pd.read_excel(xlsx, 'Sheet2')
+# writing
+# index = False parameter will not write the index values, default is True
+df.to_csv('Data/mtcars_new.csv', index=False)
+df.to_csv('Data/mtcars_new.txt', sep='\t', index=False)
+df.to_excel('Data/mtcars_new.xlsx',sheet_name='Sheet1', index = False)"""
+>>> 
+>>> df = pd.read_csv('iris.csv'); df.drop(columns=['Iris-setosa'], inplace=True); df.columns = c; df.describe()
+       sepal length  sepal width  petal length  petal width
+count    149.000000   149.000000    149.000000   149.000000
+mean       5.848322     3.051007      3.774497     1.205369
+std        0.828594     0.433499      1.759651     0.761292
+min        4.300000     2.000000      1.000000     0.100000
+25%        5.100000     2.800000      1.600000     0.300000
+50%        5.800000     3.000000      4.400000     1.300000
+75%        6.400000     3.300000      5.100000     1.800000
+max        7.900000     4.400000      6.900000     2.500000
+>>> df.cov()
+              sepal length  sepal width  petal length  petal width
+sepal length      0.686568    -0.037279      1.270362     0.515347
+sepal width      -0.037279     0.187921     -0.316731    -0.115749
+petal length      1.270362    -0.316731      3.096372     1.289124
+petal width       0.515347    -0.115749      1.289124     0.579566
+>>> df.corr()
+              sepal length  sepal width  petal length  petal width
+sepal length      1.000000    -0.103784      0.871283     0.816971
+sepal width      -0.103784     1.000000     -0.415218    -0.350733
+petal length      0.871283    -0.415218      1.000000     0.962314
+petal width       0.816971    -0.350733      0.962314     1.000000
+>>> data = {'emp_id': ['1', '2', '3', '4', '5'],'first_name': ['Jason', 'Andy', 'Allen', 'Alice', 'Amy'],'last_name': ['Larkin', 'Jacob', 'A', 'AA', 'Jackson']}
+>>> df_1 = pd.DataFrame(data, columns = ['emp_id', 'first_name', 'last_name'])
+>>> data = {
+'emp_id': ['4', '5', '6', '7'],
+'first_name': ['Brian', 'Shize', 'Kim', 'Jose'],
+'last_name': ['Alexander', 'Suma', 'Mike', 'G']}
+>>> df_2 = pd.DataFrame(data, columns = ['emp_id', 'first_name', 'last_name'])
+>>> df_1;df_2
+  emp_id first_name last_name
+0      1      Jason    Larkin
+1      2       Andy     Jacob
+2      3      Allen         A
+3      4      Alice        AA
+4      5        Amy   Jackson
+  emp_id first_name  last_name
+0      4      Brian  Alexander
+1      5      Shize       Suma
+2      6        Kim       Mike
+3      7       Jose          G
+>>> df = pd.concat([df_1, df_2]); df
+  emp_id first_name  last_name
+0      1      Jason     Larkin
+1      2       Andy      Jacob
+2      3      Allen          A
+3      4      Alice         AA
+4      5        Amy    Jackson
+0      4      Brian  Alexander
+1      5      Shize       Suma
+2      6        Kim       Mike
+3      7       Jose          G
+>>> df = df_1.append(df_2); df
+  emp_id first_name  last_name
+0      1      Jason     Larkin
+1      2       Andy      Jacob
+2      3      Allen          A
+3      4      Alice         AA
+4      5        Amy    Jackson
+0      4      Brian  Alexander
+1      5      Shize       Suma
+2      6        Kim       Mike
+3      7       Jose          G
+>>> df = pd.concat([df_1,df_2], axis=1); df
+  emp_id first_name last_name emp_id first_name  last_name
+0      1      Jason    Larkin      4      Brian  Alexander
+1      2       Andy     Jacob      5      Shize       Suma
+2      3      Allen         A      6        Kim       Mike
+3      4      Alice        AA      7       Jose          G
+4      5        Amy   Jackson    NaN        NaN        NaN
+>>> #merge >> only the emp_id's present in both table will be joined
+>>> mdf = pd.merge(df_1, df_2, on='emp_id'); mdf
+  emp_id first_name_x last_name_x first_name_y last_name_y
+0      4        Alice          AA        Brian   Alexander
+1      5          Amy     Jackson        Shize        Suma
+>>> 

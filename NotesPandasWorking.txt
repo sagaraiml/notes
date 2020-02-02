@@ -1,0 +1,27 @@
+data, raw, df are pandas dataframe
+ds, types is pandas series
+
+data = pd.read_csv('link')
+data.columns = list
+#to check which colum from df contain any null values
+data.isna().any()
+
+#removing certain columns containing particular character/ strig in column values not name
+df = df[~df['your column'].isin(['list of strings'])]
+
+#renaming col of data into some other
+raw = raw.rename(columns = {'Other' : 'Income'})
+
+#removing rows containig ' ?' value in columns
+for col in ['workclass', 'occupation']:
+    raw = raw[raw[col] != ' ?']
+
+#to remove all the columns from df containing certain character/string in column name here it is temp
+cols = [c for c in sample.columns if c.lower()[-1] != 'temp']
+data = data[cols]
+
+#selecting column except one
+x =df[:, df.columns != 'temp']
+
+#finding variables having dtypess = object and converting them into list
+cat_vars = types.where(types == 'object').dropna().index.tolist()

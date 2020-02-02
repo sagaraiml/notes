@@ -1,0 +1,48 @@
+l L1, L2 >> list
+d >> dictionary
+------------------------
+sfl = pd.Series(l); sfd = pd.Series(d)
+sfd.values; sfd.index
+--------------------------
+ser = pd.Series(L1, index=L2)
+--------------------------
+gprice = pd.read_csv('google_stock_price.csv', usecols=["Stock Price"], squeeze=True)
+max(gprice); min(gprice); sum(gprice); gprice.mean();len(gprice);gprice.count();
+sorted(gprice, reverse =True); 50 in gprice >> return True/False
+list(gprice); dict(gprice)
+gprice.is_unique
+#attribites >>gprice.ndim; gprice.size; gprice.shape; gprice.name = 'Can be changed'
+#methods >>gprice.sort_values();gprice.sort_index(ascending = True, inplace = True)
+#extracting Values gprice[50:100:5] returns values by index
+gprice.get(key = 5000, default = 'Not exit');gprice.get([50, 20, 45])
+gprice.describe();gprice.mode();gprice.sum();gprice.mean()
+gprice.idxmin();gprice.idxmax() >> gives index of max and min values
+pkmn = pd.read_csv('pokemon.csv', index_col="Pokemon", squeeze=True); pkmn.value_counts()
+------------------------------------------
+apply
+def type(string):
+    if string == 'Grass':
+        return "I am from grass"
+    elif string == 'Fire':
+        return "I am from Fire"
+    else:
+        return "Other"
+serl = pkmn.apply(type) >> return Series named serl
+serl.value_counts() >>Other608,I am from grass66,I am from Fire47,Name: Type, dtype: int64
+gprice.apply(lambda number : number%10).head()
+----------------------------------------------
+pkmon.head()					pkmon.head()
+0     Bulbasaur					Bulbasaur     Grass
+1       Ivysaur					Ivysaur       Grass
+2      Venusaur					Venusaur      Grass
+3    Charmander					Charmander     Fire
+4    Charmeleon					Charmeleon     Fire
+Name: Pokemon, dtype: object	Name: pokemon_types, dtype: object
+map function >> it maps the values of 1st series to index of 2nd series
+pkmon.map(pkmn).head()
+0    Grass
+1    Grass
+2    Grass
+3     Fire
+4     Fire
+Name: Pokemon, dtype: object
